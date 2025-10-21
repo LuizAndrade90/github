@@ -15,7 +15,12 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.paceflow.app"
+      "bundleIdentifier": "com.paceflow.app",
+      "infoPlist": {
+        "NSHealthShareUsageDescription": "PaceFlow needs access to your running workouts to automatically sync your training data and provide personalized insights.",
+        "NSHealthUpdateUsageDescription": "PaceFlow needs permission to save your running sessions to Apple Health.",
+        "UIBackgroundModes": ["fetch"]
+      }
     },
     "android": {
       "adaptiveIcon": {

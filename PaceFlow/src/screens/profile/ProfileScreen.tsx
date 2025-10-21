@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
-import { Text, Card, Button, List, Divider, Dialog, Portal } from 'react-native-paper';
+import { Text, Card, Button, List, Divider, Dialog, Portal, ActivityIndicator } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useAuth } from '../../hooks/useAuth';
+import { useHealthKit } from '../../hooks/useHealthKit';
 import { colors } from '../../theme/colors';
 
 export const ProfileScreen = () => {
   const { user, signOut } = useAuth();
+  const { isAvailable, isAuthorized, isSyncing, requestAuthorization, syncWorkouts } = useHealthKit();
   const [signOutDialog, setSignOutDialog] = useState(false);
 
   const getSubscriptionStatusColor = (status?: string) => {
@@ -191,12 +193,51 @@ export const ProfileScreen = () => {
 
             <Divider />
 
-            <List.Item
-              title="Connect Apple Watch"
-              left={(props) => <List.Icon {...props} icon="watch" />}
-              right={(props) => <List.Icon {...props} icon="chevron-right" />}
-              onPress={() => Alert.alert('Apple HealthKit', 'HealthKit integration requires iOS device. See Step 10.')}
-            />
+            {isAvailable && (
+              <>
+                <List.Item
+                  title="Apple Health Sync"
+                  description={
+                    isAuthorized
+                      ? 'Connected - Tap to sync workouts'
+                      : 'Not connected - Tap to authorize'
+                  }
+                  left={(props) => (
+                    <List.Icon
+                      {...props}
+                      icon="heart-pulse"
+                      color={isAuthorized ? colors.success : colors.textSecondary}
+                    />
+                  )}
+                  right={(props) =>
+                    isSyncing ? (
+                      <ActivityIndicator size="small" color={colors.primary} />
+                    ) : (
+                      <List.Icon
+                        {...props}
+                        icon={isAuthorized ? 'sync' : 'link'}
+                        color={isAuthorized ? colors.primary : colors.textSecondary}
+                      />
+                    )
+                  }
+                  onPress={isAuthorized ? syncWorkouts : requestAuthorization}
+                  disabled={isSyncing}
+                />
+                <Divider />
+              </>
+            )}
+
+            {!isAvailable && (
+              <>
+                <List.Item
+                  title="Apple Health Sync"
+                  description="Only available on iOS devices"
+                  left={(props) => <List.Icon {...props} icon="heart-pulse" />}
+                  disabled
+                />
+                <Divider />
+              </>
+            )}
           </Card.Content>
         </Card>
 
