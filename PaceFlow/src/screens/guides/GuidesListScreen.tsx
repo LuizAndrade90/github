@@ -82,6 +82,38 @@ export const GuidesListScreen = () => {
           </Text>
         </View>
 
+        {/* AI Custom Guide CTA */}
+        <TouchableOpacity
+          onPress={() => {
+            // @ts-ignore - Navigation typing will be fixed later
+            navigation.navigate('CreateCustomGuide');
+          }}
+          activeOpacity={0.7}
+        >
+          <Card style={styles.aiCard} mode="elevated">
+            <Card.Content>
+              <View style={styles.aiCardContent}>
+                <View style={styles.aiIconContainer}>
+                  <MaterialCommunityIcons name="robot" size={40} color={colors.primary} />
+                </View>
+                <View style={styles.aiTextContainer}>
+                  <Text variant="titleMedium" style={styles.aiTitle}>
+                    Create AI-Powered Custom Guide
+                  </Text>
+                  <Text variant="bodySmall" style={styles.aiSubtitle}>
+                    Get a personalized training plan designed just for you
+                  </Text>
+                </View>
+                <MaterialCommunityIcons name="chevron-right" size={24} color={colors.primary} />
+              </View>
+            </Card.Content>
+          </Card>
+        </TouchableOpacity>
+
+        <Text variant="titleMedium" style={styles.sectionTitle}>
+          Standard Training Plans
+        </Text>
+
         <View style={styles.guidesContainer}>
           {guides.map((guide) => (
             <TouchableOpacity
@@ -177,6 +209,43 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     color: colors.textSecondary,
+  },
+  aiCard: {
+    backgroundColor: colors.primary + '10',
+    borderRadius: 12,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: colors.primary + '30',
+  },
+  aiCardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  aiIconContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: colors.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  aiTextContainer: {
+    flex: 1,
+  },
+  aiTitle: {
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 4,
+  },
+  aiSubtitle: {
+    color: colors.textSecondary,
+    lineHeight: 18,
+  },
+  sectionTitle: {
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 16,
   },
   guidesContainer: {
     gap: 16,

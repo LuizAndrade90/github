@@ -4,6 +4,7 @@ import { useTheme } from 'react-native-paper';
 
 import { GuidesListScreen } from '../screens/guides/GuidesListScreen';
 import { GuideDetailScreen } from '../screens/guides/GuideDetailScreen';
+import { CreateCustomGuideScreen } from '../screens/guides/CreateCustomGuideScreen';
 import { GuidesStackParamList } from '../types';
 
 const Stack = createNativeStackNavigator<GuidesStackParamList>();
@@ -33,6 +34,14 @@ export const GuidesNavigator = () => {
         component={GuideDetailScreen}
         options={{
           title: 'Guide Details',
+          headerBackTitle: 'Guides',
+        }}
+      />
+      <Stack.Screen
+        name="CreateCustomGuide"
+        component={CreateCustomGuideScreen}
+        options={{
+          title: 'Create Custom Guide',
           headerBackTitle: 'Guides',
         }}
       />

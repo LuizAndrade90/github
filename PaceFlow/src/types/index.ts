@@ -21,6 +21,7 @@ export type GuidesStackParamList = {
   GuideDetail: {
     guideId: string;
   };
+  CreateCustomGuide: undefined;
 };
 
 export type SessionsStackParamList = {
@@ -84,9 +85,15 @@ export interface CustomGuide {
   id: string;
   user_id: string;
   title: string;
-  ai_generated_plan: any;
-  input_parameters: any;
+  description: string;
+  goal: GoalType;
+  fitness_level: FitnessLevel;
+  duration_weeks: number;
+  days_per_week: number;
+  sessions: GuideSession[];
+  generated_by_ai: boolean;
   created_at: string;
+  updated_at: string;
 }
 
 // Running session types
