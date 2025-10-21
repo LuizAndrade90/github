@@ -5,7 +5,7 @@ import { useTheme } from 'react-native-paper';
 
 import { DashboardScreen } from '../screens/home/DashboardScreen';
 import { GuidesNavigator } from './GuidesNavigator';
-import { SessionsListScreen } from '../screens/sessions/SessionsListScreen';
+import { SessionsNavigator } from './SessionsNavigator';
 import { ProfileScreen } from '../screens/profile/ProfileScreen';
 import { MainTabParamList } from '../types';
 
@@ -53,8 +53,9 @@ export const MainNavigator = () => {
       />
       <Tab.Screen
         name="Sessions"
-        component={SessionsListScreen}
+        component={SessionsNavigator}
         options={{
+          headerShown: false,
           title: 'Sessions',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="run" size={size} color={color} />

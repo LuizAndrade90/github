@@ -23,6 +23,14 @@ export type GuidesStackParamList = {
   };
 };
 
+export type SessionsStackParamList = {
+  SessionsList: undefined;
+  AddSession: undefined;
+  SessionDetail: {
+    sessionId: string;
+  };
+};
+
 // User types
 export type FitnessLevel = 'beginner' | 'intermediate' | 'advanced';
 export type GoalType = '5k' | '10k' | 'half_marathon' | 'marathon' | 'fitness';
