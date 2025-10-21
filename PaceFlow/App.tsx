@@ -16,6 +16,13 @@ import { colors } from './src/theme/colors';
 function RootNavigator() {
   const { session, user, loading } = useAuth();
 
+  // DEV MODE: Skip authentication for testing
+  const DEV_MODE = process.env.EXPO_PUBLIC_DEV_MODE === 'true';
+
+  if (DEV_MODE) {
+    return <MainNavigator />;
+  }
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>

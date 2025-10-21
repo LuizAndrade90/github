@@ -32,7 +32,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const DEV_MODE = process.env.EXPO_PUBLIC_DEV_MODE === 'true';
+
   useEffect(() => {
+    // DEV MODE: Use mock user for testing
+    if (DEV_MODE) {
+      const mockUser: User = {
+        id: 'demo-user-123',
+        email: 'demo@paceflow.app',
+        full_name: 'Demo Runner',
+        subscription_status: 'trial',
+        subscription_end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        created_at: new Date().toISOString(),
+      };
+      setUser(mockUser);
+      setLoading(false);
+      return;
+    }
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -57,7 +74,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [DEV_MODE]);
 
   const fetchUser = async (userId: string) => {
     try {
