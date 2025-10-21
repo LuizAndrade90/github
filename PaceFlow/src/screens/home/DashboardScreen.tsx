@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useDashboard } from '../../hooks/useDashboard';
 import { useAuth } from '../../hooks/useAuth';
+import { EmptyState } from '../../components/EmptyState';
 import { colors } from '../../theme/colors';
 
 export const DashboardScreen = () => {
@@ -80,24 +81,16 @@ export const DashboardScreen = () => {
 
         {!hasData ? (
           /* Empty State */
-          <View style={styles.emptyState}>
-            <MaterialCommunityIcons name="run-fast" size={80} color={colors.primary} />
-            <Text variant="titleLarge" style={styles.emptyTitle}>
-              Start Running Today!
-            </Text>
-            <Text variant="bodyMedium" style={styles.emptyText}>
-              Log your first run to see your stats and track your progress
-            </Text>
-            <TouchableOpacity
-              style={styles.emptyButton}
-              onPress={() => {
-                // @ts-ignore
-                navigation.navigate('Sessions', { screen: 'AddSession' });
-              }}
-            >
-              <Text style={styles.emptyButtonText}>Log First Run</Text>
-            </TouchableOpacity>
-          </View>
+          <EmptyState
+            icon="run-fast"
+            title="Start Running Today!"
+            message="Log your first run to see your stats and track your progress"
+            actionLabel="Log First Run"
+            onAction={() => {
+              // @ts-ignore
+              navigation.navigate('Sessions', { screen: 'AddSession' });
+            }}
+          />
         ) : (
           <>
             {/* Main Stats Grid */}

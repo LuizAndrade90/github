@@ -10,6 +10,7 @@ import { MainNavigator } from './src/navigation/MainNavigator';
 import { AuthProvider, useAuth } from './src/hooks/useAuth';
 import { LoginScreen } from './src/screens/auth/LoginScreen';
 import { OnboardingScreen } from './src/screens/auth/OnboardingScreen';
+import { ErrorBoundary } from './src/components/ErrorBoundary';
 import { colors } from './src/theme/colors';
 
 function RootNavigator() {
@@ -39,16 +40,18 @@ function RootNavigator() {
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <PaperProvider theme={theme}>
-        <AuthProvider>
-          <NavigationContainer>
-            <StatusBar style="dark" />
-            <RootNavigator />
-          </NavigationContainer>
-        </AuthProvider>
-      </PaperProvider>
-    </SafeAreaProvider>
+    <ErrorBoundary>
+      <SafeAreaProvider>
+        <PaperProvider theme={theme}>
+          <AuthProvider>
+            <NavigationContainer>
+              <StatusBar style="dark" />
+              <RootNavigator />
+            </NavigationContainer>
+          </AuthProvider>
+        </PaperProvider>
+      </SafeAreaProvider>
+    </ErrorBoundary>
   );
 }
 

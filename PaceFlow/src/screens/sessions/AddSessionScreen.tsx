@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, Platform } from 'react-native';
+import { View, StyleSheet, ScrollView, Platform, Alert } from 'react-native';
 import { Text, TextInput, Button, Switch, ActivityIndicator, SegmentedButtons } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -52,14 +52,56 @@ export const AddSessionScreen = () => {
       parseInt(minutes || '0') * 60 +
       parseInt(seconds || '0');
 
-    if (!dist || dist <= 0) {
-      alert('Please enter a valid distance');
+    // Validation
+    if (!distance || dist <= 0 || isNaN(dist)) {
+      Alert.alert('Invalid Distance', 'Please enter a valid distance greater than 0 km.');
+      return;
+    }
+
+    if (dist > 200) {
+      Alert.alert('Invalid Distance', 'Distance seems too large. Please check your entry.');
       return;
     }
 
     if (!totalSeconds || totalSeconds <= 0) {
-      alert('Please enter a valid duration');
+      Alert.alert('Invalid Duration', 'Please enter a valid duration.');
       return;
+    }
+
+    if (totalSeconds > 86400) {
+      // More than 24 hours
+      Alert.alert('Invalid Duration', 'Duration cannot exceed 24 hours.');
+      return;
+    }
+
+    // Validate heart rate if provided
+    if (avgHeartRate) {
+      const avgHr = parseInt(avgHeartRate);
+      if (isNaN(avgHr) || avgHr < 30 || avgHr > 250) {
+        Alert.alert('Invalid Heart Rate', 'Average heart rate must be between 30-250 bpm.');
+        return;
+      }
+    }
+
+    if (maxHeartRate) {
+      const maxHr = parseInt(maxHeartRate);
+      if (isNaN(maxHr) || maxHr < 30 || maxHr > 250) {
+        Alert.alert('Invalid Heart Rate', 'Max heart rate must be between 30-250 bpm.');
+        return;
+      }
+    }
+
+    if (avgHeartRate && maxHeartRate && parseInt(avgHeartRate) > parseInt(maxHeartRate)) {
+      Alert.alert('Invalid Heart Rate', 'Average heart rate cannot be higher than max heart rate.');
+      return;
+    }
+
+    if (calories) {
+      const cal = parseInt(calories);
+      if (isNaN(cal) || cal < 0 || cal > 10000) {
+        Alert.alert('Invalid Calories', 'Calories must be between 0-10000.');
+        return;
+      }
     }
 
     try {
@@ -78,10 +120,15 @@ export const AddSessionScreen = () => {
         source: 'manual',
       });
 
-      navigation.goBack();
+      Alert.alert('Success', 'Running session saved successfully!', [
+        {
+          text: 'OK',
+          onPress: () => navigation.goBack(),
+        },
+      ]);
     } catch (error) {
       console.error('Error creating session:', error);
-      alert('Failed to save session. Please try again.');
+      Alert.alert('Error', 'Failed to save session. Please try again.');
     } finally {
       setLoading(false);
     }
