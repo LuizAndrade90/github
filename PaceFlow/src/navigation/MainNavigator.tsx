@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from 'react-native-paper';
 
 import { DashboardScreen } from '../screens/home/DashboardScreen';
-import { GuidesListScreen } from '../screens/guides/GuidesListScreen';
+import { GuidesNavigator } from './GuidesNavigator';
 import { SessionsListScreen } from '../screens/sessions/SessionsListScreen';
 import { ProfileScreen } from '../screens/profile/ProfileScreen';
 import { MainTabParamList } from '../types';
@@ -42,8 +42,9 @@ export const MainNavigator = () => {
       />
       <Tab.Screen
         name="Guides"
-        component={GuidesListScreen}
+        component={GuidesNavigator}
         options={{
+          headerShown: false,
           title: 'Guides',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="book-open-variant" size={size} color={color} />

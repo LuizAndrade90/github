@@ -16,6 +16,13 @@ export type MainTabParamList = {
   Profile: undefined;
 };
 
+export type GuidesStackParamList = {
+  GuidesList: undefined;
+  GuideDetail: {
+    guideId: string;
+  };
+};
+
 // User types
 export type FitnessLevel = 'beginner' | 'intermediate' | 'advanced';
 export type GoalType = '5k' | '10k' | 'half_marathon' | 'marathon' | 'fitness';
