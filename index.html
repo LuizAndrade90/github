@@ -1,9 +1,217 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goal Dashboard - Track Your Goals Together</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
 <body>
-  <h1>YOUR NAME</h1>
-  <p>Welcome to my website!</p>
-  <img src="https://content.codecademy.com/articles/github-pages-via-web-app/happy-ice-cream.gif" />
-</body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🎯 Goal Dashboard</h1>
+                <div class="header-actions">
+                    <button id="settingsBtn" class="btn btn-icon" title="Settings">⚙️</button>
+                    <button id="notificationBtn" class="btn btn-icon" title="Notifications">🔔</button>
+                </div>
+            </div>
+        </header>
 
+        <!-- User Selection -->
+        <div class="user-selector">
+            <button id="user1Btn" class="user-btn active" data-user="user1">👤 User 1</button>
+            <button id="user2Btn" class="user-btn" data-user="user2">👤 User 2</button>
+            <button id="bothUsersBtn" class="user-btn" data-user="both">👥 Both</button>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Goals Section -->
+            <section class="goals-section">
+                <div class="section-header">
+                    <h2>Your Goals</h2>
+                    <button id="addGoalBtn" class="btn btn-primary">+ Add Goal</button>
+                    <button id="aiSuggestBtn" class="btn btn-secondary">✨ AI Suggestions</button>
+                </div>
+                <div id="goalsList" class="goals-list">
+                    <!-- Goals will be dynamically added here -->
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="section-header">
+                    <h2>Progress Overview</h2>
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3>Goal Completion</h3>
+                        <canvas id="completionChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Weekly Activity</h3>
+                        <canvas id="weeklyChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Activity Tracker -->
+            <section class="activity-section">
+                <div class="section-header">
+                    <h2>Activity Tracker</h2>
+                    <button id="syncHealthBtn" class="btn btn-secondary">🍎 Sync Apple Health</button>
+                </div>
+                <div id="activityCalendar" class="activity-calendar">
+                    <!-- Weekly calendar will be dynamically generated -->
+                </div>
+            </section>
+
+            <!-- Apple Health Data -->
+            <section class="health-section">
+                <div class="section-header">
+                    <h2>Apple Health Integration</h2>
+                </div>
+                <div id="healthData" class="health-data">
+                    <p class="info-text">Connect to Apple Health to automatically track your activities.</p>
+                    <button id="connectHealthBtn" class="btn btn-primary">Connect Apple Health</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Add/Edit Goal Modal -->
+        <div id="goalModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Add New Goal</h2>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <form id="goalForm">
+                    <div class="form-group">
+                        <label for="goalTitle">Goal Title</label>
+                        <input type="text" id="goalTitle" required placeholder="e.g., Exercise 3 times a week">
+                    </div>
+                    <div class="form-group">
+                        <label for="goalDescription">Description</label>
+                        <textarea id="goalDescription" rows="3" placeholder="Describe your goal..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="goalCategory">Category</label>
+                        <select id="goalCategory">
+                            <option value="fitness">🏃 Fitness</option>
+                            <option value="health">💚 Health</option>
+                            <option value="learning">📚 Learning</option>
+                            <option value="habits">🎯 Habits</option>
+                            <option value="nutrition">🥗 Nutrition</option>
+                            <option value="mindfulness">🧘 Mindfulness</option>
+                            <option value="other">📝 Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="goalTarget">Target (numeric)</label>
+                        <input type="number" id="goalTarget" min="1" placeholder="e.g., 3 for 3 times per week">
+                    </div>
+                    <div class="form-group">
+                        <label for="goalFrequency">Frequency</label>
+                        <select id="goalFrequency">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="goalOwner">Owner</label>
+                        <select id="goalOwner">
+                            <option value="user1">User 1</option>
+                            <option value="user2">User 2</option>
+                            <option value="both">Both</option>
+                        </select>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="goalNotifications">
+                            Enable notifications for this goal
+                        </label>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="goalHealthSync">
+                            Sync with Apple Health
+                        </label>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary cancel-btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Goal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Settings</h2>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="settings-content">
+                    <div class="form-group">
+                        <label for="user1Name">User 1 Name</label>
+                        <input type="text" id="user1Name" placeholder="Enter name">
+                    </div>
+                    <div class="form-group">
+                        <label for="user2Name">User 2 Name</label>
+                        <input type="text" id="user2Name" placeholder="Enter name">
+                    </div>
+                    <div class="form-group">
+                        <label for="apiKey">Anthropic API Key (for AI features)</label>
+                        <input type="password" id="apiKey" placeholder="sk-ant-...">
+                        <small>Your API key is stored locally and never sent anywhere except to Anthropic.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="mcpEndpoint">Apple Health MCP Endpoint (optional)</label>
+                        <input type="text" id="mcpEndpoint" placeholder="http://localhost:3000">
+                        <small>Leave empty to use manual data entry.</small>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="enableNotifications">
+                            Enable push notifications
+                        </label>
+                    </div>
+                    <div class="modal-actions">
+                        <button id="exportDataBtn" class="btn btn-secondary">Export Data</button>
+                        <button id="importDataBtn" class="btn btn-secondary">Import Data</button>
+                        <button id="saveSettingsBtn" class="btn btn-primary">Save Settings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Suggestions Modal -->
+        <div id="aiModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>AI Goal Suggestions</h2>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div id="aiContent" class="ai-content">
+                    <p class="info-text">Let AI analyze your current goals and suggest improvements or new goals.</p>
+                    <button id="generateSuggestionsBtn" class="btn btn-primary">Generate Suggestions</button>
+                    <div id="aiSuggestions" class="ai-suggestions"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script src="db.js"></script>
+    <script src="notifications.js"></script>
+    <script src="charts.js"></script>
+    <script src="health.js"></script>
+    <script src="ai.js"></script>
+    <script src="app.js"></script>
+</body>
 </html>
